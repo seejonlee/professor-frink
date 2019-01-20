@@ -1,0 +1,15 @@
+{
+  "name": "structs-algos",
+  "version": "1.0.0",
+  "description": "Eggheadio Data Structures and Algorithms in Javascript",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Jon Lee",
+  "license": "ISC"
+}

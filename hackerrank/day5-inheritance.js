@@ -17,12 +17,15 @@ Rectangle.prototype.area = function() {
   return this.w * this.h;
 }
 
-class Square extends Rectangle (
-  constructor(w, h) {
-    
+class Square extends Rectangle {
+  constructor(length) {
+    super(length, length);
   }
-)
+}
 
 let rect = new Rectangle(4,5);
 console.log('rect: ', rect);
-console.log(rect.area());
+console.log('rect area: 20 -> ', rect.area());
+let sq = new Square(3, 3);
+console.log('square: ', sq);
+console.log('sq area: 9 -> ', sq.area());

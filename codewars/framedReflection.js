@@ -8,30 +8,30 @@
  * 1. What is calling this and what should be returned if the input is not of type String.
  */
 
- const framedReflection = (str) => {
-   const reverseTxt = (txt) => {
-     let result = '';
+const framedReflection = (str) => {
+  const reverseTxt = (txt) => {
+    let result = '';
 
-     let charArray = txt.split('');
+    let charArray = txt.split('');
 
-     let i = 0;
-     let j = charArray.length - 1;
+    let i = 0;
+    let j = charArray.length - 1;
 
-     while (i < j) {
-       let temp = charArray[i];
-       charArray[i] = charArray[j];
-       charArray[j] = temp;
-       i++;
-       j--;
-     }
+    while (i < j) {
+      let temp = charArray[i];
+      charArray[i] = charArray[j];
+      charArray[j] = temp;
+      i++;
+      j--;
+    }
 
-     return charArray.join('');
-   };
+    return charArray.join('');
+  };
 
-   const wrapTextInMirror = (txt) => {
-     let words = txt.split(' ');
-     let maxWordChars = 0;
-     let result = '';
+  const wrapTextInMirror = (txt) => {
+    let words = txt.split(' ');
+    let maxWordChars = 0;
+    let result = '';
 
     // Iterate the array to Get the length of the longest word, then you know how many characters to output.
     words.forEach((word) => {
@@ -56,10 +56,10 @@
     });
     result += topBottom;
 
-     return result;
-   };
+    return result;
+  };
 
-   console.log(wrapTextInMirror(reverseTxt(str)));
- }
+  console.log(wrapTextInMirror(reverseTxt(str)));
+}
 
- framedReflection('reverse this');
+framedReflection('reverse this');

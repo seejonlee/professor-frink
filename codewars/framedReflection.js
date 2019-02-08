@@ -10,13 +10,21 @@
 
 const framedReflection = (str) => {
   const reverseTxt = (txt) => {
-    let result = '';
+    
+    let wordArray = txt.split(' ');
+    
+    wordArray.forEach((word, index) => {
+      wordArray[index] = reverseWord(word);
+    });
 
-    let charArray = txt.split('');
-
+    return wordArray.join(' ');
+  };
+  
+  const reverseWord = (word) => {
+    let charArray = word.split('');
     let i = 0;
     let j = charArray.length - 1;
-
+    
     while (i < j) {
       let temp = charArray[i];
       charArray[i] = charArray[j];
@@ -24,9 +32,10 @@ const framedReflection = (str) => {
       i++;
       j--;
     }
-
+    
     return charArray.join('');
-  };
+  }
+
 
   const wrapTextInMirror = (txt) => {
     let words = txt.split(' ');

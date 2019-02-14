@@ -8,7 +8,9 @@
  * 1. What is calling this and what should be returned if the input is not of type String.
  */
 
-const framedReflection = (str) => {
+const  mirror = (text) => {
+  // BEGIN: Helper functions
+  //    Spit a string into single words and reverse each word.
   const reverseTxt = (txt) => {
     
     let wordArray = txt.split(' ');
@@ -20,6 +22,7 @@ const framedReflection = (str) => {
     return wordArray.join(' ');
   };
   
+  //    Reverse the characters in a single word.
   const reverseWord = (word) => {
     let charArray = word.split('');
     let i = 0;
@@ -36,7 +39,7 @@ const framedReflection = (str) => {
     return charArray.join('');
   }
 
-
+  //   Format the text.
   const wrapTextInMirror = (txt) => {
     let words = txt.split(' ');
     let maxWordChars = 0;
@@ -67,8 +70,9 @@ const framedReflection = (str) => {
 
     return result;
   };
+  // END: Helper functions.
 
-  console.log(wrapTextInMirror(reverseTxt(str)));
+  return wrapTextInMirror(reverseTxt(text));
 }
 
-framedReflection('reverse this');
+console.log(mirror('reverse this'));

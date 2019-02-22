@@ -76,3 +76,19 @@ const  mirror = (text) => {
 }
 
 console.log(mirror('reverse this'));
+
+
+/**
+ * Solution from another user on Codewars.
+ * I like this because it follows the same logical steps as mine,
+ * but is significantly shorter in lines of code. It takes more of a functional approach
+ * and uses spread syntax cleverly.
+ */
+function mirror2(s){
+  let a = s.split(' ');
+  let m = Math.max(...a.map(x=>x.length));
+  a = a.map(x=>'* '+[...x].reverse().join('')+' '.repeat(m-x.length)+' *');
+  return ['*'.repeat(m+4),...a,'*'.repeat(m+4)].join('\n');
+}
+
+console.log(mirror2('reverse this'));

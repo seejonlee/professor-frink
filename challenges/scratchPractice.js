@@ -240,3 +240,61 @@ function twoNumberSum(addends, sum) {
 // console.log('Expected Result: [1, -1]', twoNumberSum([3, 5, -4, 8, 11, 1, -1, 6], 0));
 // console.log('Expected Result: []', twoNumberSum([3], 3));
 // console.log('Expected Result: []', twoNumberSum([3, 1, 5, -5], 3));
+
+
+/**
+ * Caesar Cipher Encryptor
+ * Given a non-empty string of lowercase letters and a non-negative integer representing a key, write a function that returns a new string obtained by ¸shifting every letter in the input string by k positions in the alphabet, where k is the key.
+ * Note that letters should "wrap" around the alphabet; in other words, the letter `z` shifted by one returns the letter `a`.
+ * Bonus
+ * 1. Can you allow for [A-Z|a-z|0-9]?
+ * 2. Can you complete the algorithm without using O(n) extra space(declaring an alphabet array for example)?
+ */
+function caesarCipherEncryptor(input, key) {
+	let cipher = '';
+	// Convert input to lowercase as a safety
+	const source = input.toLowerCase();
+
+	// Define number bounds of alphabet
+	const alphaLowerCaseFloor = 97; // ASCII decimal for 'a'
+	const alphaLowerCaseCeiling = 123; // 1 + the ASCII decimal for 'z' (i.e. 122)
+	//	UPPERCASE
+	const alphaUpperCaseFloor = 65; // ASCII decimal for 'A'
+	const alphaUpperCeiling = 91; // 1 + the ASCII decimal for 'z' (i.e. 90)
+
+	// Define number bounds of numbers
+	const numberFloor = 48; // ASCII decimal for 0
+	const numberCeiling = 58; // 1 + the ASCII decimal for 9 (i.e. 57)
+
+
+	// Helpers that execute the below algorithm
+	/**
+	 * 1. Convert character to number.
+	 * 2. Update number by adding k to it.
+	 * 3. Convert number back to character.
+	 * 4. Return character.
+	 */
+	function shiftLowerCaseChar(char, key) {
+		let shiftedPosition = char.charCodeAt(0) + key;
+
+		if (shiftedPosition > alphaLowerCaseCeiling - 1) {
+			shiftedPosition = (shiftedPosition % alphaLowerCaseCeiling) + alphaLowerCaseFloor;
+		}
+
+		return String.fromCharCode(shiftedPosition);
+	}
+
+	// Loop string and shift characters/numbers
+	for (let i = 0; i < source.length; i += 1) {
+		const cipherChar = shiftLowerCaseChar(source.charAt(i), key);
+		cipher += cipherChar;
+	}
+
+	return cipher;
+}
+
+// Runner
+console.log('Caesar Cipher Encryptor');
+console.log('Expected Result: zab ', caesarCipherEncryptor('xyz', 2));
+console.log('Expected Result: abc ', caesarCipherEncryptor('abc', 0));
+console.log('Expected Result: tcrshocqjuidxcabatmhmrdpbhnqrgtgdnm ', caesarCipherEncryptor('mvklahvjcnbwqvtutmfafkwiuagjkzmzwgf', 7));

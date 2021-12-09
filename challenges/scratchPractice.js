@@ -192,3 +192,51 @@ function getProductsOfAllIntsExceptAtIndexV3(factors) {
 // console.log(getProductsOfAllIntsExceptAtIndexV2([1, 7, 3, 4]));
 // console.log(getProductsOfAllIntsExceptAtIndexV3([1, 1, 1]));
 // console.log(getProductsOfAllIntsExceptAtIndexV3([1, 7, 3, 4]));
+
+
+/**
+ * Two Number Sum
+ * Write a function that takes in a non-empty array of distinct integers and an integer representing a target sum. If any two numbers in the input array sum ¸up to the target sum, the function should return them in an array, in any order. If no two numbers sum up to the target sum, the function should return an empty array.
+ * Note that the target sum has to be obtained by summing two different integers in the array; you can't add a single integer to itself in order to obtain the target sum.
+ * You can assume that there will be at most one pair of numbers summing up to the target sum.
+ * Test Case:
+ * 			array = [3, 5, -4, 8, 11, 1, -1, 6];
+ * 			targetSum = 10;
+ * 			[-1, 11] // output - the numbers could be in reverse order
+*/
+/**
+ * Time complexity: Loop the input array at most one time through so O(n).
+ * Space complexity: Store each visited value in the array in a set,
+ * which will be at most the length of the array. So including the input
+ * array will yield O(2n) => O(n).
+ */
+function twoNumberSum(addends, sum) {
+	// Set to store visited addends for quick lookup.
+	// Allows us to run in linear time.
+	const visited = new Set();
+	const result = [];
+
+	if (addends.length > 0) {
+		addends.forEach(value => {
+			// Calculate the required value that will equal the sum when added with the current iterated value.
+			const pairAddend = sum - value;
+
+			if (visited.has(pairAddend)) {
+				result.push(pairAddend);
+				result.push(value);
+				return result;
+			} else {
+				visited.add(value);
+			}
+		});
+	}
+
+	return result;
+}
+
+// Runner
+// console.log('Two Number Sum');
+// console.log('Expected Result: [11, -1]', twoNumberSum([3, 5, -4, 8, 11, 1, -1, 6], 10));
+// console.log('Expected Result: [1, -1]', twoNumberSum([3, 5, -4, 8, 11, 1, -1, 6], 0));
+// console.log('Expected Result: []', twoNumberSum([3], 3));
+// console.log('Expected Result: []', twoNumberSum([3, 1, 5, -5], 3));

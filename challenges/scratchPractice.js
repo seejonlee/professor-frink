@@ -250,17 +250,23 @@ function twoNumberSum(addends, sum) {
  * 1. Can you allow for [A-Z|a-z|0-9]?
  * 2. Can you complete the algorithm without using O(n) extra space(declaring an alphabet array for example)?
  */
+/**
+ * Time complexity: Loop the input string at most one time through so O(n).
+ * Space complexity: O(n) where n is the size of the input string. I know I could modify the
+ * input string itself and not use additional storage for the 'cipher' and 'source' variables, but I'm keeping it this way
+ * because I believe it's more readable.
+ */
 function caesarCipherEncryptor(input, key) {
 	let cipher = '';
-	// Convert input to lowercase as a safety
-	const source = input.toLowerCase();
+	// Can normalize the string in any way should we need to. (i.e. convert to all lower case).
+	const source = input;
 
 	// Define number bounds of alphabet
 	const alphaLowerCaseFloor = 97; // ASCII decimal for 'a'
 	const alphaLowerCaseCeiling = 123; // 1 + the ASCII decimal for 'z' (i.e. 122)
 	//	UPPERCASE
 	const alphaUpperCaseFloor = 65; // ASCII decimal for 'A'
-	const alphaUpperCeiling = 91; // 1 + the ASCII decimal for 'z' (i.e. 90)
+	const alphaUpperCaseCeiling = 91; // 1 + the ASCII decimal for 'z' (i.e. 90)
 
 	// Define number bounds of numbers
 	const numberFloor = 48; // ASCII decimal for 0
@@ -274,6 +280,20 @@ function caesarCipherEncryptor(input, key) {
 	 * 3. Convert number back to character.
 	 * 4. Return character.
 	 */
+	function shiftChar(char, key) {
+		const charCode = char.charCodeAt(0);
+
+		if (charCode >= numberFloor && charCode < numberCeiling) {
+			return shiftNumberChar(char, key);
+		} else if (charCode >= alphaUpperCaseFloor && charCode < alphaUpperCaseCeiling) {
+			return shiftUpperCaseChar(char, key);
+		} else if (charCode >= alphaLowerCaseFloor && charCode < alphaLowerCaseCeiling) {
+			return shiftLowerCaseChar(char, key);
+		} else {
+			return char;
+		}
+	}
+
 	function shiftLowerCaseChar(char, key) {
 		let shiftedPosition = char.charCodeAt(0) + key;
 
@@ -284,9 +304,29 @@ function caesarCipherEncryptor(input, key) {
 		return String.fromCharCode(shiftedPosition);
 	}
 
+	function shiftUpperCaseChar(char, key) {
+		let shiftedPosition = char.charCodeAt(0) + key;
+
+		if (shiftedPosition > alphaUpperCaseCeiling - 1) {
+			shiftedPosition = (shiftedPosition % alphaUpperCaseCeiling) + alphaUpperCaseFloor;
+		}
+
+		return String.fromCharCode(shiftedPosition);
+	}
+
+	function shiftNumberChar(char, key) {
+		let shiftedPosition = char.charCodeAt(0) + key;
+
+		if (shiftedPosition > numberCeiling - 1) {
+			shiftedPosition = (shiftedPosition % numberCeiling) + numberFloor;
+		}
+
+		return String.fromCharCode(shiftedPosition);
+	}
+
 	// Loop string and shift characters/numbers
 	for (let i = 0; i < source.length; i += 1) {
-		const cipherChar = shiftLowerCaseChar(source.charAt(i), key);
+		const cipherChar = shiftChar(source.charAt(i), key);
 		cipher += cipherChar;
 	}
 
@@ -298,3 +338,5 @@ console.log('Caesar Cipher Encryptor');
 console.log('Expected Result: zab ', caesarCipherEncryptor('xyz', 2));
 console.log('Expected Result: abc ', caesarCipherEncryptor('abc', 0));
 console.log('Expected Result: tcrshocqjuidxcabatmhmrdpbhnqrgtgdnm ', caesarCipherEncryptor('mvklahvjcnbwqvtutmfafkwiuagjkzmzwgf', 7));
+console.log('Expected Result: Cheud-726 ', caesarCipherEncryptor('Zebra-493', 3));
+console.log('Expected Result: xyzaWUVwuv-444.@ ', caesarCipherEncryptor('stuvRPQrpq-999.@', 5));

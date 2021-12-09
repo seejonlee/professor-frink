@@ -205,7 +205,7 @@ function getProductsOfAllIntsExceptAtIndexV3(factors) {
  * 			[-1, 11] // output - the numbers could be in reverse order
 */
 /**
- * Time complexity: Loop the input array at most one time through so O(n).
+ * Time complexity: Loop the input array at most one time through -> O(n).
  * Space complexity: Store each visited value in the array in a set,
  * which will be at most the length of the array. So including the input
  * array will yield O(2n) => O(n).
@@ -251,7 +251,7 @@ function twoNumberSum(addends, sum) {
  * 2. Can you complete the algorithm without using O(n) extra space(declaring an alphabet array for example)?
  */
 /**
- * Time complexity: Loop the input string at most one time through so O(n).
+ * Time complexity: Loop the input string at most one time through -> O(n).
  * Space complexity: O(n) where n is the size of the input string. I know I could modify the
  * input string itself and not use additional storage for the 'cipher' and 'source' variables, but I'm keeping it this way
  * because I believe it's more readable.
@@ -261,14 +261,13 @@ function caesarCipherEncryptor(input, key) {
 	// Can normalize the string in any way should we need to. (i.e. convert to all lower case).
 	const source = input;
 
-	// Define number bounds of alphabet
+	// Define number bounds of LOWERCASE alphabet
 	const alphaLowerCaseFloor = 97; // ASCII decimal for 'a'
 	const alphaLowerCaseCeiling = 123; // 1 + the ASCII decimal for 'z' (i.e. 122)
-	//	UPPERCASE
+	// Define number bounds of UPPERCASE alphabet
 	const alphaUpperCaseFloor = 65; // ASCII decimal for 'A'
 	const alphaUpperCaseCeiling = 91; // 1 + the ASCII decimal for 'z' (i.e. 90)
-
-	// Define number bounds of numbers
+	// Define number bounds of NUMBERS
 	const numberFloor = 48; // ASCII decimal for 0
 	const numberCeiling = 58; // 1 + the ASCII decimal for 9 (i.e. 57)
 
@@ -277,48 +276,29 @@ function caesarCipherEncryptor(input, key) {
 	/**
 	 * 1. Convert character to number.
 	 * 2. Update number by adding k to it.
-	 * 3. Convert number back to character.
-	 * 4. Return character.
+	 * 3. Shift the number so it stays within the ASCII alphanumeric bounds.
+	 * 4. Convert number back to character.
+	 * 5. Return character.
 	 */
 	function shiftChar(char, key) {
 		const charCode = char.charCodeAt(0);
 
 		if (charCode >= numberFloor && charCode < numberCeiling) {
-			return shiftNumberChar(char, key);
+			return getShiftedChar(char, key, numberFloor, numberCeiling);
 		} else if (charCode >= alphaUpperCaseFloor && charCode < alphaUpperCaseCeiling) {
-			return shiftUpperCaseChar(char, key);
+			return getShiftedChar(char, key, alphaUpperCaseFloor, alphaUpperCaseCeiling);
 		} else if (charCode >= alphaLowerCaseFloor && charCode < alphaLowerCaseCeiling) {
-			return shiftLowerCaseChar(char, key);
+			return getShiftedChar(char, key, alphaLowerCaseFloor, alphaLowerCaseCeiling);
 		} else {
 			return char;
 		}
 	}
 
-	function shiftLowerCaseChar(char, key) {
+	function getShiftedChar(char, key, lowerASCIIBound, upperASCIIBound) {
 		let shiftedPosition = char.charCodeAt(0) + key;
 
-		if (shiftedPosition > alphaLowerCaseCeiling - 1) {
-			shiftedPosition = (shiftedPosition % alphaLowerCaseCeiling) + alphaLowerCaseFloor;
-		}
-
-		return String.fromCharCode(shiftedPosition);
-	}
-
-	function shiftUpperCaseChar(char, key) {
-		let shiftedPosition = char.charCodeAt(0) + key;
-
-		if (shiftedPosition > alphaUpperCaseCeiling - 1) {
-			shiftedPosition = (shiftedPosition % alphaUpperCaseCeiling) + alphaUpperCaseFloor;
-		}
-
-		return String.fromCharCode(shiftedPosition);
-	}
-
-	function shiftNumberChar(char, key) {
-		let shiftedPosition = char.charCodeAt(0) + key;
-
-		if (shiftedPosition > numberCeiling - 1) {
-			shiftedPosition = (shiftedPosition % numberCeiling) + numberFloor;
+		if (shiftedPosition > upperASCIIBound - 1) {
+			shiftedPosition = (shiftedPosition % upperASCIIBound) + lowerASCIIBound;
 		}
 
 		return String.fromCharCode(shiftedPosition);

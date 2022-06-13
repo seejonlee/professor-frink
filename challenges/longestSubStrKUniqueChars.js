@@ -12,64 +12,54 @@ Input: "2aabbcbbbadef"
 Output: bbcbbb
 */
 function KUniqueCharacters(str) {
-	// Sliding window technique
-
-	const k = str.charAt(0);
-	let start = 1;
-	let end = 1;
-	let subStr = '';
+	// Sliding Window
+	let startIdx = 1;
+	let endIdx = 1;
+	let k = str.charAt(0);
+	let substring = '';
+	// key: char
+	// value: last visited index
+	let visitedChars = {};
+	let numUniqueChars = 0;
 	let expandWindow = true;
-	const uniqueCharMap = {};
-	let uniqueCharCount = 0;
 
-	// While start and end have not reached the end of the string
-	while (start < str.length && end < str.length) {
-		const char = expandWindow ? str.charAt(end) : str.charAt(start);
-		// console.group('Loop');
-		// console.log(str);
-		// console.log(char);
-		// console.log('expandWindow', expandWindow);
-		// console.log('start', start);
-		// console.log('end', end);
+	while (startIdx < str.length && endIdx < str.length) {
+		const currentChar = (expandWindow ? str.charAt(endIdx) : str.charAt(startIdx));
 
 		if (expandWindow) {
-			if (!uniqueCharMap[char]) {
-				uniqueCharCount += 1;
+			if (!visitedChars[currentChar]) {
+				numUniqueChars++;
 			}
-			uniqueCharMap[char] = end;
+			visitedChars[currentChar] = endIdx;
 		}
 
 		if (!expandWindow) {
-			// Closing the window
-			// Check if we can remove it
-			if (uniqueCharMap[char] && uniqueCharMap[char] === start) {
-				uniqueCharMap[char] = null;
-				uniqueCharCount -= 1;
+			// Check if we can reduce the amount of unique characters in this window
+			if (visitedChars[currentChar] && visitedChars[currentChar] === startIdx) {
+				visitedChars[currentChar] = null;
+				numUniqueChars--;
 			}
-
-			if (start !== end) start++;
+			// We update startIdx whenever we are closing the window because this
+			// represents the actual closing of the window.
+			startIdx++;
 		}
 
-		if (uniqueCharCount <= k) {
-			// Check the substr length and update
-			const currentSubStr = str.substring(start, end + 1);
-			if (currentSubStr.length > subStr.length) {
-				subStr = currentSubStr;
+		if (numUniqueChars <= k) {
+			const currentSubstring = str.slice(startIdx, endIdx + 1);
+			if (currentSubstring.length > substring.length) {
+				substring = currentSubstring;
 			}
-			end++;
+
+			// We have not exceeded the limit of unique chars so keep on expanding the window.
 			expandWindow = true;
+			endIdx++
 		} else {
-			// Close the window
+			// Flag that the next iteration should look at the startIdx.
 			expandWindow = false;
 		}
-
-		// console.log('uniqueCharMap', uniqueCharMap);
-		// console.log('uniqueCharCount', uniqueCharCount);
-		// console.log('subStr', subStr);
-		// console.groupEnd();
 	}
 
-	return subStr;
+	return substring;
 }
 
 console.log(KUniqueCharacters('2aabcaaa'));
